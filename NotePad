@@ -1,0 +1,74 @@
+users = {
+    "smith007" : {
+        "password" : "4bl3G0d",
+        "has_note" : False,
+    } 
+}
+
+def login(username, password):
+    " Takes in the user name and password and checks it with the users dictionary. Returns true if user name and password is correct else it returns false."
+
+    user = users.get(username)
+    if user:
+        if user['password'] == password:
+            print("Login successful")
+            return True
+    
+    return False
+
+
+def signup(username, password):
+    "Takes in the username and password and creates a user in the users dictionary"
+
+    if username in users.keys():
+        print(f"{username} already exists!")
+        return False
+    else:
+        users[username] = {
+            'password' : password,
+            'has_note' : False
+        }
+        print("Sign up succesful")
+        return True
+
+def notepad_function(username):
+    res = input("Do you want to create a and write new notes or modify your existing notepad?\nEnter 'w' to write and 'a' to modify\n>")
+
+    name_of_note = f"{username}.txt"
+    if res.lower() == 'w':
+        file = open(name_of_note, 'w')
+        print("Note created succesfully")
+        contents = input("Please enter your contents\n>")
+        file.write(contents)
+        users[username]['has_note'] =True
+        print('Saved successfully')
+    elif res.lower() == 'a':
+        file = open(name_of_note, 'a')
+        contents = input("Please enter your contents\n>")
+        file.write(contents)
+        print('Saved successfully')
+    return
+
+
+
+
+
+
+
+print("Welcome to Nora's Notepad")
+response = input("Enter 'y' to login or 's' to sign up\n>")
+
+username = input('Enter your username\n>')
+password = input('Enter your password\n>')
+
+if response.lower() == 'y':
+    login_ = login(username, password)
+    if login_:
+        notepad_function(username)
+    else:
+        print("Invalid username or password")
+
+elif response.lower() == 's':
+    signup_ = signup(username, password)
+    if signup_:
+        notepad_function(username)
